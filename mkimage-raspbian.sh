@@ -3,12 +3,13 @@ set -e
 
 dir="raspbian"
 rootfsDir="raspbian"
-tarFile="raspbian.2015.05.05.tar.xz"
-( set -x; mkdir -p "$rootfsDir" )
+tarFile="raspbian.2018.03.13.tar.xz"
+( set -x; mkdir -p "$rootfsDir/usr/bin" )
 
 (
 	set -x
-	debootstrap --no-check-gpg --arch=armhf --verbose --variant='minbase' --include='iproute,iputils-ping' jessie "$rootfsDir" http://archive.raspbian.org/raspbian/
+	cp qemu-arm-static $rootfsDir/usr/bin/
+	debootstrap --no-check-gpg --arch=armhf --verbose --variant='minbase' --include='iproute,iputils-ping' stretch "$rootfsDir" http://archive.raspbian.org/raspbian/
 )
 
 # now for some Docker-specific tweaks
